@@ -7,14 +7,16 @@ function Home() {
     const [genre, setGenre] = useState('fiction'); // Default to fiction
     const [data, setData] = useState(null)
 
-    const apiCall = () => {
-        fetch(`https://api.nytimes.com/svc/books/v3/lists/current/${bookType}-${genre}.json?api-key=Kd3XePjEtptah0ZB2W6AEns1ODTIOzxL`)
-            .then(response => response.json())
-            .then(apiData => {
-                console.log(apiData, "API Data");
-                setData(apiData)
-            })
-            .catch(error => console.log(error));
+    async function apiCall() {
+        
+            const response = await fetch(`https://api.nytimes.com/svc/books/v3/lists/current/${bookType}-${genre}.json?api-key=Kd3XePjEtptah0ZB2W6AEns1ODTIOzxL`)
+            if(!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json()
+            setData(data);
+                      
     };
 
     const handleButtonClick = () => {
